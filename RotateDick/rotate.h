@@ -10,12 +10,10 @@
 
 
 
-// Rotate_Image º¯Êı£º
-// ±¾º¯Êı²Î¿¼ https://codebus.cn/yangw/transparent-putimage
-// ±¾º¯Êı²Î¿¼ http://tieba.baidu.com/p/1490993926
-// IMAGE * pTo : ĞÂÍ¼
-// IMAGE * pFrom : Ô­Í¼
-// double rad : Ğı×ªµÄ»¡¶È
+// Rotate_Image å‡½æ•°ï¼š
+// IMAGE * pTo : æ–°å›¾
+// IMAGE * pFrom : åŸå›¾
+// double rad : æ—‹è½¬çš„å¼§åº¦
 struct J8
 {
 	int x;
@@ -38,12 +36,12 @@ void RotateImage(IMAGE* pTo, IMAGE* pFrom, double rad, bool isBit)
 	IMAGE* pWorking = GetWorkingImage();
 	SetWorkingImage(pFrom);
 	int iWidth = getwidth();
-	int iHeight = getheight();												// »ñÈ¡Ô­Í¼³¤¿í
+	int iHeight = getheight();												// è·å–åŸå›¾é•¿å®½
 
-	while (rad > 2 * PI)													// »¯¼ò»¡¶È
+	while (rad > 2 * PI)													// åŒ–ç®€å¼§åº¦
 		rad -= 2 * PI;
 
-	double pad = rad;														// ´¦Àí»¡¶È
+	double pad = rad;														// å¤„ç†å¼§åº¦
 	if (pad > PI / 2 && pad <= PI)
 	{
 		pad -= PI / 2;
@@ -60,21 +58,21 @@ void RotateImage(IMAGE* pTo, IMAGE* pFrom, double rad, bool isBit)
 	}
 
 	int	tWidth = int(iWidth * cos(pad) + iHeight * sin(pad));
-	int	tHeight = int(iHeight * cos(pad) + iWidth * sin(pad));				// ¼ÆËãĞÂÍ¼´óĞ¡
+	int	tHeight = int(iHeight * cos(pad) + iWidth * sin(pad));				// è®¡ç®—æ–°å›¾å¤§å°
 
 	int iMinX = -(iWidth / 2), iMinY = -(iHeight / 2);
-	int iMaxX = iMinX + iWidth, iMaxY = iMinY + iHeight;					// ¼ÆËãÔ­Í¼×îĞ¡£¨´ó£©×ø±ê
+	int iMaxX = iMinX + iWidth, iMaxY = iMinY + iHeight;					// è®¡ç®—åŸå›¾æœ€å°ï¼ˆå¤§ï¼‰åæ ‡
 
 	int tMinX = -(tWidth / 2), tMinY = -(tHeight / 2);
-	int tMaxX = tMinX + tWidth, tMaxY = tMinY + tHeight;					// ¼ÆËãĞÂÍ¼×îĞ¡£¨´ó£©×ø±ê
+	int tMaxX = tMinX + tWidth, tMaxY = tMinY + tHeight;					// è®¡ç®—æ–°å›¾æœ€å°ï¼ˆå¤§ï¼‰åæ ‡
 
-	setorigin(-iMinX, -iMinY);												// ÉèÖÃÍ¼Æ¬ÖĞĞÄÎªÔ­µã
+	setorigin(-iMinX, -iMinY);												// è®¾ç½®å›¾ç‰‡ä¸­å¿ƒä¸ºåŸç‚¹
 
 	SetWorkingImage(NULL);
-	pTo->Resize(tWidth, tHeight);											// ³õÊ¼»¯ĞÂÍ¼
+	pTo->Resize(tWidth, tHeight);											// åˆå§‹åŒ–æ–°å›¾
 
 	DWORD* dst = GetImageBuffer(pTo);
-	DWORD* src = GetImageBuffer(pFrom);										// »ñÈ¡ĞÂÍ¼¡¢Ô­Í¼µÄ»º³åÇø
+	DWORD* src = GetImageBuffer(pFrom);										// è·å–æ–°å›¾ã€åŸå›¾çš„ç¼“å†²åŒº
 
 	SetWorkingImage(pTo);
 	for (int y1 = 0; y1 < tHeight; y1++)
@@ -91,7 +89,7 @@ void RotateImage(IMAGE* pTo, IMAGE* pFrom, double rad, bool isBit)
 		dst += tWidth;
 	}
 	SetWorkingImage(pWorking);
-	for (int y1 = 0; y1 < tHeight; y1++)									// ³õÊ¼»¯ĞÂÍ¼
+	for (int y1 = 0; y1 < tHeight; y1++)									// åˆå§‹åŒ–æ–°å›¾
 		dst -= tWidth;
 
 	for (int y1 = tMinY; y1 < tMaxY; y1++)
@@ -99,26 +97,25 @@ void RotateImage(IMAGE* pTo, IMAGE* pFrom, double rad, bool isBit)
 		for (int x1 = tMinX; x1 < tMaxX; x1++)
 		{
 			int x = int(x1 * cos(rad) - y1 * sin(rad));
-			int y = int(x1 * sin(rad) + y1 * cos(rad));						// ¼ÆËã±ä»»ºó×ø±ê
+			int y = int(x1 * sin(rad) + y1 * cos(rad));						// è®¡ç®—å˜æ¢ååæ ‡
 
 			int sxy = (iHeight - (y - iMinY) - 1) * iWidth + (x - iMinX);
-			int dxy = (tHeight - (y1 - tMinY) - 1) * tWidth + (x1 - tMinX);	// ¼ÆËã×ø±êÔÚ»º³åÇøµÄÎ»ÖÃ
+			int dxy = (tHeight - (y1 - tMinY) - 1) * tWidth + (x1 - tMinX);	// è®¡ç®—åæ ‡åœ¨ç¼“å†²åŒºçš„ä½ç½®
 
-			if (x >= iMinX && x < iMaxX && y >= iMinY && y < iMaxY)			// Ô½½çÌØÅĞ
+			if (x >= iMinX && x < iMaxX && y >= iMinY && y < iMaxY)			// è¶Šç•Œç‰¹åˆ¤
 				dst[dxy] = src[sxy];
 		}
 	}
 
 	SetWorkingImage(pFrom);
 	setorigin(0, 0);
-	SetWorkingImage(pWorking);												// »¹Ô­Ô­Í¼×ø±ê
+	SetWorkingImage(pWorking);												// è¿˜åŸåŸå›¾åæ ‡
 }
 
 
 
-// transparentimage º¯Êı£º
-// Çë²Î¿¼ https://codebus.cn/yangw/transparent-putimage ÖĞµÄµÚÎåÏî£º
-// ¸ù¾İ png µÄ alpha ĞÅÏ¢ÊµÏÖ°ëÍ¸Ã÷ÌùÍ¼£¨»ùÓÚÖ±½Ó²Ù×÷ÏÔÊ¾»º³åÇø£©
+// transparentimage å‡½æ•°ï¼š
+// æ ¹æ® png çš„ alpha ä¿¡æ¯å®ç°åŠé€æ˜è´´å›¾ï¼ˆåŸºäºç›´æ¥æ“ä½œæ˜¾ç¤ºç¼“å†²åŒºï¼‰
 void transparentimage(IMAGE* dstimg, int x, int y, IMAGE* srcimg)
 {
 	DWORD* dst = GetImageBuffer(dstimg);
